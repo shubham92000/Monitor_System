@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "linux_parser.h"
 #include "process.h"
@@ -13,16 +14,39 @@ using std::set;
 using std::size_t;
 using std::string;
 using std::vector;
+using std::cout;
+using std::endl;
 
 // TODO: Return the system's CPU
 Processor& System::Cpu() { 
-    // Processor processor;
-    // cpu_ = processor;
+    cpu_ = Processor();
+    
     return cpu_;
 }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+    processes_.clear();
+    vector<int> pids = LinuxParser::Pids();
+    std::cout<<"pids size:"<<pids.size()<<std::endl;
+    for(auto p:pids){
+        Process process;
+        process.setPid(p);
+        // process.User();
+        // process.Command();
+        // process.CpuUtilization();
+        // process.Ram();
+        // process.UpTime();
+        processes_.push_back(process);
+        // cout<<"<Command> :"<<process.Command();
+        // if(p==1 || p == 2 || p==3398){
+        //     cout<<"<Command> :"<<process.Command()<<endl;
+        // }
+        // std::cout<<p<<"  ";
+    }
+    // std::cout<<processes_.size()<<std::endl;
+    return processes_; 
+}
 
 // TODO: Return the system's kernel identifier (string)
 std::string System::Kernel() { return LinuxParser::Kernel(); }

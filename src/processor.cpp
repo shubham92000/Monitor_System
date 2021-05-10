@@ -8,7 +8,7 @@ float Processor::Utilization() {
     prev_cpu_stats = cpu_stats;
 
     unsigned int microsecond = 1000000;
-    usleep(1 * microsecond);//sleeps for 3 second
+    usleep(1 * microsecond);//sleeps for 1 second
 
     cpu_stats = LinuxParser::CpuUtilization();
 
@@ -63,5 +63,5 @@ float Processor::Utilization() {
     float CpuUtilization = 1 - (idled / totald);
     
     return CpuUtilization;
-    // return 0.0f;
+    
 }

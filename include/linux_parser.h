@@ -20,12 +20,12 @@ const std::string kPasswordPath{"/etc/passwd"};
 
 // System
 float MemoryUtilization();    //SCAM
-long UpTime();                //done
+long UpTime();                //done but not visible
 std::vector<int> Pids();      //done
 int TotalProcesses();         //done   
 int RunningProcesses();       //done
 std::string OperatingSystem();//done
-std::string Kernel();         //done but not visible
+std::string Kernel();         //done 
 
 // CPU
 enum CPUStates {
