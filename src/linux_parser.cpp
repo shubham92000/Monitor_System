@@ -270,10 +270,87 @@ string LinuxParser::User(int pid) {
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { 
-  long uptime = 0.0l;
+long LinuxParser::UpTime(int pid) { 
+  long starttime= 0.0l;
+  long system_hertz= 0.0l;
+
+  int count = 0;
+  string key;
+  string line;
+  std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
+  std::getline(filestream,line);
+  std::istringstream linestream(line);
+  while(count<22){
+
+    if(count==21){
+      linestream>>key;
+      starttime = long(stoi(key));
+    }
+
+    linestream>>key;
+    count++;
+  }
+
+  system_hertz = _SC_CLK_TCK;
+
+  return starttime/system_hertz;
+}
 
 
+float LinuxParser::processCpuUtilization(int pid) { 
+  long process_uptime = 0.0l;
+  
+  long system_uptime= 0.0l;
+  long utime= 0.0l;
+  long stime= 0.0l;
+  long cutime= 0.0l;
+  long cstime= 0.0l;
+  long starttime= 0.0l;
+  long system_hertz= 0.0l;
 
-  return uptime; 
+  std::ifstream open_system_uptime(kProcDirectory + kUptimeFilename);
+  std::string line;
+  std::getline(open_system_uptime,line);
+  std::istringstream linestream_system(line);
+  std::string key;
+  linestream_system >> key;
+  system_uptime = long(stoi(key));
+
+  int count = 0;
+  std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
+  std::getline(filestream,line);
+  std::istringstream linestream(line);
+  while(count<22){
+
+    if(count==13){
+      linestream>>key;
+      utime = long(stoi(key));
+    }else if(count==14){
+      linestream>>key;
+      stime = long(stoi(key));
+    }else if(count==15){
+      linestream>>key;
+      cutime = long(stoi(key));
+    }else if(count==16){
+      linestream>>key;
+      cstime = long(stoi(key));
+    }
+    else if(count==21){
+      linestream>>key;
+      starttime = long(stoi(key));
+    }
+
+    linestream>>key;
+    count++;
+  }
+
+  system_hertz = _SC_CLK_TCK;
+
+
+  long total_time = utime + stime;
+  total_time = total_time + cutime + cstime;
+  long seconds = system_uptime - (starttime / system_hertz);
+  float cpu_usage = ((total_time / system_hertz) / seconds);
+
+  return cpu_usage;
 }

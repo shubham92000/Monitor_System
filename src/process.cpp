@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include<iostream>
 
 #include "linux_parser.h"
 #include "process.h"
@@ -22,11 +23,11 @@ int Process::Pid() {
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { 
-    return 0.0f; 
+    return LinuxParser::processCpuUtilization(pid_); 
 }
 
 // TODO: Return the command that generated this process
-string Process::Command() { 
+string Process::Command(){ 
     command_ = LinuxParser::Command(pid_);
     return  command_;
 }
@@ -45,7 +46,8 @@ string Process::User() {
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { 
-    Uptime_ = 0.0l; 
+    Uptime_ = LinuxParser::UpTime();
+    std::cout<<Uptime_<<"  ,  ";
     return Uptime_; 
 }
 
