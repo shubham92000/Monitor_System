@@ -61,7 +61,7 @@ float Processor::Utilization() {
     float idled = (Idle - PrevIdle);
 
     float CpuUtilization = 1 - (idled / totald);
-    
+    // std::cout<<"agg CPU:"<<CpuUtilization;
     return CpuUtilization;
     
 }

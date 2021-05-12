@@ -17,7 +17,7 @@ void Process::setPid(int p){
 }
 
 // TODO: Return this process's ID
-int Process::Pid() { 
+int Process::Pid(){ 
     return pid_; 
 }
 
@@ -29,6 +29,10 @@ float Process::CpuUtilization() {
 // TODO: Return the command that generated this process
 string Process::Command(){ 
     command_ = LinuxParser::Command(pid_);
+    if(command_ == ""){
+        return "NULL";
+    }
+    
     return  command_;
 }
 
@@ -47,17 +51,18 @@ string Process::User() {
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { 
     Uptime_ = LinuxParser::UpTime();
-    std::cout<<Uptime_<<"  ,  ";
+    // std::cout<<Uptime_<<"  ,  ";
     return Uptime_; 
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const& a) const { 
-    // if(this->CpuUtilization_ > a.CpuUtilization_){
-    //     return true; 
+    // if(this->CpuUtilization_ < a.CpuUtilization_){
+    //     return false; 
     // }
-    if(this->pid_ > a.pid_){
+    // return true;
+    if(this->pid_ < a.pid_){
         return true; 
     }
     return false;
