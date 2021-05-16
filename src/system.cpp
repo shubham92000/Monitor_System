@@ -25,51 +25,22 @@ Processor& System::Cpu() {
     return cpu_;
 }
 
-bool compare(Process p1,Process p2){
-    // cout<<"      "<<p1.Pid()<<"     "<<p2.Pid()<<endl;
-    if(p1.Pid() > p2.Pid()){
-        return true;
-    }
-    
-    // if(p1.CpuUtilization() > p2.CpuUtilization()){
-    //     return true;
-    // }
-    return false;
-}
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() {
-    processes_.clear();
+std::vector<Process>& System::Processes() {
+    // processes_.clear();
     vector<int> pids = LinuxParser::Pids();
-    // std::cout<<"pids size:"<<pids.size()<<std::endl;
+    std::vector<Process> new_proc;
     for(auto p:pids){
-        Process process;
-        process.setPid(p);
-        // process.User();
-        // process.Command();
-        // process.CpuUtilization();
-        // process.Ram();
-        // process.UpTime();
+        Process process(p);
         processes_.push_back(process);
+        new_proc.push_back(process);
     }
-    // std::cout<<processes_.size()<<std::endl;
-    // try
-    // {
-        // std::cout<<"here";
-    // std::cout<<"processes_ size:"<<processes_.size()<<std::endl;
-    // std::sort(processes_.begin(),processes_.end(),compare);
-    // cout<<compare(*processes_.begin(),*(processes_.begin()+1));
 
-    // throw -1;  
-    // }
-    // catch(...)
-    // {
-    //     std::cout<<"unable to sort";
-    // }
-    
-    // processes_.
-    
-    return processes_; 
+
+    // std::sort(new_proc.begin(),new_proc.end(),compare);
+    // std::sort(processes_.begin(),processes_.end(),compare);
+    return processes_;
 }
 
 // TODO: Return the system's kernel identifier (string)

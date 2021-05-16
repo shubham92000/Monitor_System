@@ -18,12 +18,25 @@ class System {
   int RunningProcesses();             // TODO: See src/system.cpp
   std::string Kernel();               // TODO: See src/system.cpp
   std::string OperatingSystem();      // TODO: See src/system.cpp
+  static bool compare(Process p1,Process p2){
+    if(p1.getPid() < p2.getPid()){
+        return true;
+    }
+    return false;
+}
 
   // TODO: Define any necessary private members
  private:
   Processor cpu_ = {};
-  std::vector<Process> processes_ = {};
+  std::vector<Process> processes_;
   long int systemUptime_;
 };
+
+// bool compare(Process p1,Process p2){
+//     if(p1.getPid() < p2.getPid()){
+//         return true;
+//     }
+//     return false;
+// }
 
 #endif

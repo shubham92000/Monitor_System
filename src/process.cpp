@@ -12,23 +12,22 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-void Process::setPid(int p){
-    pid_ = p;
-}
+
+Process::Process(int p):pid_(p){}
 
 // TODO: Return this process's ID
-int Process::Pid(){ 
+int Process::getPid() const{ 
     return pid_; 
 }
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { 
-    return LinuxParser::processCpuUtilization(pid_); 
+    CpuUtil = LinuxParser::processCpuUtilization(getPid()); 
+    return CpuUtil;
 }
 
 // TODO: Return the command that generated this process
 string Process::Command(){ 
-    command_ = LinuxParser::Command(pid_);
     if(command_ == ""){
         return "NULL";
     }
@@ -50,9 +49,8 @@ string Process::User() {
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { 
-    Uptime_ = LinuxParser::UpTime();
-    // std::cout<<Uptime_<<"  ,  ";
-    return Uptime_; 
+    Uptime_ = LinuxParser::UpTime(getPid()); 
+    return Uptime_;
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects
@@ -62,8 +60,16 @@ bool Process::operator<(Process const& a) const {
     //     return false; 
     // }
     // return true;
-    if(this->pid_ < a.pid_){
-        return true; 
+
+
+    if(Process::getPid() < a.getPid()){
+        return false; 
     }
-    return false;
+    return true;
 }
+
+// bool Process::compare(Process b){
+//     if(*this (Process::<) b){
+
+//     }
+// }
