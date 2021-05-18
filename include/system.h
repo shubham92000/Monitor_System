@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
 #include "linux_parser.h"
 #include "process.h"
 #include "processor.h"
@@ -18,25 +19,23 @@ class System {
   int RunningProcesses();             // TODO: See src/system.cpp
   std::string Kernel();               // TODO: See src/system.cpp
   std::string OperatingSystem();      // TODO: See src/system.cpp
+  void buildPids();
+  void buildProcess();
   static bool compare(Process p1,Process p2){
-    if(p1.getPid() < p2.getPid()){
+    if(p1.Command().length() > p2.Command().length()){
         return true;
     }
     return false;
-}
+  }
 
-  // TODO: Define any necessary private members
+  static void bubbleSort(std::vector<Process>&);
+
+  
  private:
   Processor cpu_ = {};
-  std::vector<Process> processes_;
+  std::vector<int> pids_ = {};
+  std::vector<Process> processes_ = {};
   long int systemUptime_;
 };
-
-// bool compare(Process p1,Process p2){
-//     if(p1.getPid() < p2.getPid()){
-//         return true;
-//     }
-//     return false;
-// }
 
 #endif

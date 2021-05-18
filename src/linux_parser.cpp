@@ -30,6 +30,9 @@ string LinuxParser::OperatingSystem() {
       }
     }
   }
+
+  filestream.close();
+
   return value;
 }
 
@@ -43,6 +46,8 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
+
+  stream.close();
   return kernel;
 }
 
@@ -85,9 +90,14 @@ float LinuxParser::MemoryUtilization() {
     memfree = abs(value[0] - value[1]);
     memfree = memfree/value[0];
 
+    filestream.close();
     return memfree;
     
   }
+  if(filestream.is_open()){
+    filestream.close();
+  }
+  
   return memfree;
 }
 
@@ -105,6 +115,7 @@ long LinuxParser::UpTime() {
 
   total_uptime = long(stof(intermediate));
   // std::cout<<total_uptime<<std::endl;
+  filestream.close();
   return total_uptime;
 }
 
@@ -144,7 +155,12 @@ vector<string> LinuxParser::CpuUtilization() {
       linestream >> temp;
       cpu_stats.push_back(temp);
     }
+    filestream.close();
     return cpu_stats;
+  }
+
+  if(filestream.is_open()){
+    filestream.close();
   }
   return cpu_stats; 
 }
@@ -162,11 +178,14 @@ int LinuxParser::TotalProcesses() {
       linestream >> word;
       if(word == "processes"){
         linestream>>total_processes;
+
+        filestream.close();
         return total_processes;
       }
     }
   }
 
+  filestream.close();
   return total_processes;
 }
 
@@ -183,11 +202,14 @@ int LinuxParser::RunningProcesses() {
       linestream >> word;
       if(word == "procs_running"){
         linestream>>running_processes;
+
+        filestream.close();
         return running_processes;
       }
     }
   }
 
+  filestream.close();
   return running_processes;
 }
 
@@ -200,6 +222,7 @@ string LinuxParser::Command(int pid){
     filestream >> cmdline;
   }
   
+  filestream.close();
   return cmdline; 
 }
 
@@ -217,12 +240,14 @@ string LinuxParser::Ram(int pid) {
           linestream >> key;
           if(key == "VmSize:"){
             linestream >> process_ram_usage;
-            process_ram_usage =  to_string(stof(process_ram_usage)/1024);
+            process_ram_usage =  to_string(stoi(process_ram_usage)/1024);
             return process_ram_usage;
           }
         // }
       }
     }
+
+  filestream.close();
   return process_ram_usage; 
 }
 
@@ -239,10 +264,13 @@ string LinuxParser::Uid(int pid){
           linestream >> key;
           if(key == "Uid:"){
             linestream >> process_uid;
+            filestream.close();
             return process_uid;
           }
       }
     }
+
+  filestream.close();
   return process_uid; 
 }
 
@@ -261,10 +289,11 @@ string LinuxParser::User(int pid) {
     linestream >> x;
     linestream >> etc_uid;
     if(etc_uid == process_uid){
+      filestream.close();
       return user_name;
     }
   }
-
+  filestream.close();
   return user_name; 
 }
 
@@ -292,20 +321,20 @@ long LinuxParser::UpTime(int pid) {
   }
 
   system_hertz = _SC_CLK_TCK;
-
+  filestream.close();
   return starttime/system_hertz;
 }
 
 
 float LinuxParser::processCpuUtilization(int pid) { 
   
-  long system_uptime= 0.0l;
-  long utime= 0.0l;
-  long stime= 0.0l;
-  long cutime= 0.0l;
-  long cstime= 0.0l;
-  long starttime= 0.0l;
-  long system_hertz= 0.0l;
+  long int system_uptime= 0.0l;
+  long int utime= 0.0l;
+  long int stime= 0.0l;
+  long int cutime= 0.0l;
+  long int cstime= 0.0l;
+  long int starttime= 0.0l;
+  long int system_hertz= 0.0l;
 
   std::ifstream open_system_uptime(kProcDirectory + kUptimeFilename);
   std::string line;
@@ -313,7 +342,8 @@ float LinuxParser::processCpuUtilization(int pid) {
   std::istringstream linestream_system(line);
   std::string key;
   linestream_system >> key;
-  system_uptime = long(stoi(key));
+  system_uptime = (stol(key));
+  open_system_uptime.close();
 
   int count = 0;
   std::ifstream filestream(kProcDirectory + to_string(pid) + kStatFilename);
@@ -323,20 +353,20 @@ float LinuxParser::processCpuUtilization(int pid) {
 
     if(count==13){
       linestream>>key;
-      utime = long(stoi(key));
+      utime = (stol(key));
     }else if(count==14){
       linestream>>key;
-      stime = long(stoi(key));
+      stime = (stol(key));
     }else if(count==15){
       linestream>>key;
-      cutime = long(stoi(key));
+      cutime = (stol(key));
     }else if(count==16){
       linestream>>key;
-      cstime = long(stoi(key));
+      cstime = (stol(key));
     }
     else if(count==21){
       linestream>>key;
-      starttime = long(stoi(key));
+      starttime = (stol(key));
     }
 
     linestream>>key;
@@ -346,10 +376,11 @@ float LinuxParser::processCpuUtilization(int pid) {
   system_hertz = _SC_CLK_TCK;
 
 
-  long total_time = utime + stime;
+  long int total_time = utime + stime;
   total_time = total_time + cutime + cstime;
-  long seconds = system_uptime - (starttime / system_hertz);
+  long int seconds = system_uptime - (starttime / system_hertz);
   float cpu_usage = ((total_time / system_hertz) / seconds);
 
+  filestream.close();
   return cpu_usage;
 }

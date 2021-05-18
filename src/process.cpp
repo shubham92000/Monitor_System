@@ -13,21 +13,30 @@ using std::to_string;
 using std::vector;
 
 
-Process::Process(int p):pid_(p){}
+Process::Process(int p){
+    pid_ = p;
+    userName_ = User();
+    command_ = Command();
+    CpuUtil = CpuUtilization();
+    Ram_ = Ram();
+    Uptime_ = UpTime();
+}
 
 // TODO: Return this process's ID
-int Process::getPid() const{ 
+int Process::getPid(){ 
     return pid_; 
 }
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() { 
     CpuUtil = LinuxParser::processCpuUtilization(getPid()); 
+    // std::cout<<" cpuutil "<<CpuUtil;
     return CpuUtil;
 }
 
 // TODO: Return the command that generated this process
-string Process::Command(){ 
+string Process::Command(){
+    command_ = LinuxParser::Command(getPid());
     if(command_ == ""){
         return "NULL";
     }
@@ -37,13 +46,13 @@ string Process::Command(){
 
 // TODO: Return this process's memory utilization
 string Process::Ram() { 
-    Ram_ = LinuxParser::Ram(pid_); 
+    Ram_ = LinuxParser::Ram(getPid()); 
     return Ram_;
 }
 
 // TODO: Return the user (name) that generated this process
 string Process::User() { 
-    userName_ = LinuxParser::User(pid_); 
+    userName_ = LinuxParser::User(getPid()); 
     return userName_;
 }
 
@@ -55,18 +64,18 @@ long int Process::UpTime() {
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a) const { 
-    // if(this->CpuUtilization_ < a.CpuUtilization_){
-    //     return false; 
-    // }
-    // return true;
+// bool Process::operator<(Process const& a) const { 
+//     // if(this->CpuUtilization_ < a.CpuUtilization_){
+//     //     return false; 
+//     // }
+//     // return true;
 
 
-    if(Process::getPid() < a.getPid()){
-        return false; 
-    }
-    return true;
-}
+//     if(Process::getPid() < a.getPid()){
+//         return false; 
+//     }
+//     return true;
+// }
 
 // bool Process::compare(Process b){
 //     if(*this (Process::<) b){

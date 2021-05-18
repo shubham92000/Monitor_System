@@ -1,2 +1,2 @@
-<h1>Final System Monitor</h1>
+# Final System Monitor
 ![board](assets/output.png)
