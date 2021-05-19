@@ -61,13 +61,13 @@ void System::buildProcess(){
     // cout<<" done ";
 
     for(auto p:pids_){
-        try{
+        // try{
             // Process process(p);
             processes_.push_back(Process(p));
             // cout<<" u ";
-        }catch(std::exception &e){
-            // cout<<e.what()<<" ";
-        }
+        // }catch(std::exception &e){
+        //     // cout<<e.what()<<" ";
+        // }
     }
 
     // std::cout<<" reached bproc "<<processes_.size();
@@ -95,7 +95,7 @@ void System::buildProcess(){
 }
 
 // TODO: Return a container composed of the system's processes
-std::vector<Process>& System::Processes() {
+std::vector<Process> System::Processes() {
     buildProcess();
     return processes_;
 }
