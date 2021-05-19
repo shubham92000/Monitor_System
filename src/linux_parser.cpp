@@ -10,7 +10,6 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-// DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
   string line;
   string key;
@@ -36,7 +35,6 @@ string LinuxParser::OperatingSystem() {
   return value;
 }
 
-// DONE: An example of how to read data from the filesystem
 string LinuxParser::Kernel() {
   string os, version, kernel;
   string line;
@@ -51,7 +49,6 @@ string LinuxParser::Kernel() {
   return kernel;
 }
 
-// BONUS: Update this to use std::filesystem
 vector<int> LinuxParser::Pids() {
   vector<int> pids;
   DIR* directory = opendir(kProcDirectory.c_str());
@@ -71,7 +68,6 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// TODO: Read and return the system memory utilization     SCAM
 float LinuxParser::MemoryUtilization() { 
   float memfree = 0.0f;
   string line[2];
@@ -101,7 +97,6 @@ float LinuxParser::MemoryUtilization() {
   return memfree;
 }
 
-// TODO: Read and return the system uptime
 long LinuxParser::UpTime() {
   long total_uptime = 0.0l;
   string line;
@@ -114,33 +109,30 @@ long LinuxParser::UpTime() {
   }
 
   total_uptime = long(stof(intermediate));
-  // std::cout<<total_uptime<<std::endl;
   filestream.close();
   return total_uptime;
 }
 
-// TODO: Read and return the number of jiffies for the system
+//Read jiffies for the system
 long LinuxParser::Jiffies() {
   return 0; 
 }
 
-// TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { 
+//Read active jiffies for a PID
+long LinuxParser::ActiveJiffies(int pid) { 
   return 0; 
 }
 
-// TODO: Read and return the number of active jiffies for the system
+//Read active jiffies for the system
 long LinuxParser::ActiveJiffies() {
   return 0; 
 }
 
-// TODO: Read and return the number of idle jiffies for the system
+//Read idle jiffies for the system
 long LinuxParser::IdleJiffies() { 
   return 0; 
 }
 
-// TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
   string line;
   vector<string> cpu_stats;
@@ -165,7 +157,6 @@ vector<string> LinuxParser::CpuUtilization() {
   return cpu_stats; 
 }
 
-// TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() { 
   int total_processes = 0;
   string line;
@@ -189,7 +180,6 @@ int LinuxParser::TotalProcesses() {
   return total_processes;
 }
 
-// TODO: Read and return the number of running processes
 int LinuxParser::RunningProcesses() { 
   int running_processes = 0;
   string line;
@@ -213,8 +203,6 @@ int LinuxParser::RunningProcesses() {
   return running_processes;
 }
 
-// TODO: Read and return the command associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Command(int pid){
   string cmdline;
   std::ifstream filestream(kProcDirectory + to_string(pid) + kCmdlineFilename);
@@ -226,8 +214,6 @@ string LinuxParser::Command(int pid){
   return cmdline; 
 }
 
-// TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Ram(int pid) { 
   string process_ram_usage;
   std::string line;
@@ -251,8 +237,6 @@ string LinuxParser::Ram(int pid) {
   return process_ram_usage; 
 }
 
-// TODO: Read and return the user ID associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Uid(int pid){ 
   string process_uid;
   std::string line;
@@ -274,8 +258,6 @@ string LinuxParser::Uid(int pid){
   return process_uid; 
 }
 
-// TODO: Read and return the user associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
 //username
 string LinuxParser::User(int pid) { 
   string process_uid = LinuxParser::Uid(pid);
@@ -297,8 +279,6 @@ string LinuxParser::User(int pid) {
   return user_name; 
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) { 
   long starttime= 0.0l;
   long system_hertz= 0.0l;

@@ -28,8 +28,6 @@ class System {
     return false;
   }
 
-  static void bubbleSort(std::vector<Process>&);
-
   
  private:
   Processor cpu_ = {};
