@@ -11,20 +11,25 @@
 
 class System {
  public:
-  Processor& Cpu();                   // TODO: See src/system.cpp
-  std::vector<Process> Processes();  // TODO: See src/system.cpp
-  float MemoryUtilization();          // TODO: See src/system.cpp
-  long UpTime();                      // TODO: See src/system.cpp
-  int TotalProcesses();               // TODO: See src/system.cpp
-  int RunningProcesses();             // TODO: See src/system.cpp
-  std::string Kernel();               // TODO: See src/system.cpp
-  std::string OperatingSystem();      // TODO: See src/system.cpp
+  Processor& Cpu();                   
+  std::vector<Process> Processes();  
+  float MemoryUtilization();          
+  long UpTime();                      
+  int TotalProcesses();               
+  int RunningProcesses();             
+  std::string Kernel();               
+  std::string OperatingSystem();      
   void buildPids();
   void buildProcess();
   static bool compare(Process p1,Process p2){
-    if(p1.Command().length() > p2.Command().length()){
-        return true;
+    // if(p1.Command().length() > p2.Command().length()){
+    //     return true;
+    // }
+
+    if(p1.CpuUtilization() > p2.CpuUtilization()){
+      return true;
     }
+
     return false;
   }
 

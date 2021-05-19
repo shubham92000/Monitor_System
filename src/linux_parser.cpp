@@ -353,13 +353,13 @@ float LinuxParser::processCpuUtilization(int pid) {
     count++;
   }
 
-  system_hertz = _SC_CLK_TCK;
+  system_hertz = _SC_CLK_TCK; 
 
 
   long int total_time = utime + stime;
   total_time = total_time + cutime + cstime;
   long int seconds = system_uptime - (starttime / system_hertz);
-  float cpu_usage = ((total_time / system_hertz) / seconds);
+  float cpu_usage = ((float(total_time) / float(system_hertz)) / seconds);
 
   filestream.close();
   return cpu_usage;
